@@ -1,7 +1,7 @@
 ColisionFiles
 ============
 
-#Python Script for detect all repeted files in the seleted path
+#Script to detect identical files using md5 hash
 
 ####Author : Borja Pintos
 
