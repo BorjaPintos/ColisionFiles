@@ -1,6 +1,7 @@
 import random, math, os, hashlib, sys
 
-outputdebug = False 
+outputdebug = False
+BLOCKSIZE = 65536
 colisionList = {}
 
 def debug(msg):
@@ -156,7 +157,13 @@ class AVLTree():
                 filepath = os.path.join(path,f)
                 self.insertPath(filepath)
         else:
-            md5 = hashlib.md5(open(path).read()).hexdigest()
+            hasher = hashlib.md5()
+            with open(path, 'rb') as afile:
+                buf = afile.read(BLOCKSIZE)
+                while len(buf) > 0:
+                    hasher.update(buf)
+                    buf = afile.read(BLOCKSIZE)
+            md5 = hasher.hexdigest()
             colisionPath = self.insert(md5,path)
             if colisionPath!=None:
                 c = colisionList.get(md5)
