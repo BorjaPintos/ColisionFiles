@@ -172,6 +172,9 @@ class AVLTree():
                     colisionList[md5] = c
                 c.update(path);
 
+    def getColisionList(self):
+        global colisionList
+        return colisionList
 
 # Usage example
 if __name__ == "__main__": 
@@ -184,6 +187,6 @@ if __name__ == "__main__":
         tree = AVLTree()
         tree.insertPath(sys.argv[1])
 
-        for key, c in colisionList.items():
+        for key, c in tree.getColisionList().items():
             print c
     
