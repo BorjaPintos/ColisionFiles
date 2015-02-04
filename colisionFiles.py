@@ -27,7 +27,10 @@ class Colision():
         self.path.append(path)
 
     def __str__(self):
-     return "Repeat: " + str(self.count) + "\n" + "Hash :" + self.md5 + "\n" + "Paths :" + str(self.path) + "\n"
+     value = "Hash :" + self.md5 + "\n" + "Colisions: " + str(self.count) + "\n" + "Paths:\n"
+     for path in self.path:
+        value+=path + "\n"
+     return value
 
 class AVLTree():
     def __init__(self, *args):

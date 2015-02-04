@@ -4,6 +4,7 @@ import tkFileDialog, os
 from colisionFiles import *
   
 rootPath = ()
+tree = AVLTree()
 
 
 def checkValidateDir():
@@ -36,11 +37,11 @@ def askdirectory():
     
 def search():
     global rootPath
+    global tree
 
     selectPath.pack_forget() 
     searching.pack()
 
-    tree = AVLTree()
     tree.insertPath(rootPath)
 
     labelResult2.config(text=str(len(tree.getColisionList())))
@@ -49,22 +50,149 @@ def search():
     if (len(tree.getColisionList())>0):
         optionsResult.pack()
 
+def finish():
+    generating.pack_forget() 
+    done.pack()
 
 def generateTxt():
     viewResults.pack_forget()
     generating.pack()
-    """
-    for key, c in tree.getColisionList().items():
-        print c
-    """
+    txt = generateStrTxt(tree.getColisionList().items());
+    f = open('colisions.txt', 'w')
+    f.write(txt)
+    f.close()
+    finish()
 
 def generateHtml():
     viewResults.pack_forget()
+
     generating.pack()
+
+    html = generateStrHTML(tree.getColisionList().items());
+    f = open('colisions.html', 'w')
+    f.write(html)
+    f.close()
+    finish()
+
+def generateStrTxt(colisionItems):
+    txt = """"""
+    for key, c in colisionItems:
+        txt+=str(c) + "\n"
+    return txt
+
+def generateStrHTML(colisionItems):
+    html = """
+    <html>
+    <head>
+	    <title>Colision Galery</title>
+        <style>
+            body{
+	            background-color: grey;
+            }
+
+            #galery {
+            border: 1px solid #EAEAEA;
+            border-radius: 25px;
+            padding: 20px;
+            padding-bottom: 0;
+            background: #0099CC;
+            width: 940px;
+            margin: auto;
+            }
+
+            #imgBig {
+            border: 1px solid #F2F2F2;
+            border-radius: 25px;
+            width: 940px;
+            height: 300px;
+            }
+
+            #galery_min{
+	            display: table;
+                margin: 0 auto;
+            }
+
+            .img_min {
+            width:  60px;
+            height:  60px;
+            border-radius: 10px;
+            float: left;
+            cursor: pointer;
+            padding: 5px;
+            margin: 10px 5px;
+            }
+
+            #resume {
+            border: 1px solid #EAEAEA;
+
+            border-radius: 25px;
+            padding: 20px;
+            padding-bottom: 0;
+            background: #0099CC;
+            width: 940px;
+
+            margin: auto;
+            }
+        </style>
+    </head>
+    <body>
+          <div id="galery">
+            
+            <div id="principal_galery">
     """
-    for key, c in tree.getColisionList().items():
-        print c
+    for key, c in colisionItems:
+        html+="""<img id="imgBig"src='"""+ c.path[0] + """'>"""
+
+        break
+    html+="""
+            </div>
+            <div id="galery_min">
+          """
+    for key, c in colisionItems:
+        html+="""<img class="img_min" src='""" + c.path[0] +"""'onclick="{
+                document.getElementById('imgBig').src='""" + c.path[0] + """'
+                document.getElementById('hash').innerHTML = '"""+ c.md5 +"""'
+                document.getElementById('colisions').innerHTML = '"""+ str(c.count) +"""'
+                paths = document.getElementById('paths');
+                while (paths.firstChild) {
+                    paths.removeChild(paths.firstChild);
+                }
+                """
+        for path in c.path:
+            html+="""
+            label = document.createElement('label');
+            label.innerHTML ='""" +path +"""'; 
+            paths.appendChild(label);
+            br = document.createElement('br');
+            paths.appendChild(br);
+            """
+        html+="""}">"""
+    html+="""
+             </div>
+          </div>
+        <div id ="resume">"""
+    for key, c in colisionItems:
+        html+="""<label id="hashlabel">Hash</label>
+                <label id="hash">"""+ c.md5 + """</label>
+                <br></br>
+                <label id="colisionslabel">Colisions</label>
+                <label id="colisions">""" + str(c.count) +"""</label>
+                <br></br>
+                <label id="pathslabel">Paths</label>
+                <div id="paths">
+                """
+        for path in c.path:
+            html+="""<label>"""+ path + """</label><br>"""
+        html+="""</div>"""
+                
+        break
+    html+="""
+        </div>
+
+    </body>
+    </html>
     """
+    return html
 
 if __name__=='__main__':
 
@@ -117,6 +245,11 @@ if __name__=='__main__':
     """pack when click in generate"""
     labelGenerating = Label(generating, text = "Generating...")
     labelGenerating.pack()
+
+    done = Frame(root)
+    """pack when finisk generate"""
+    labelDone = Label(done, text = "Done")
+    labelDone.pack()
 
 
     root.mainloop() 
