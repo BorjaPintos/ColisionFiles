@@ -161,7 +161,7 @@ def generateStrHTML(colisionItems):
         for path in c.path:
             html+="""
             label = document.createElement('label');
-            label.innerHTML ='""" +path +"""'; 
+            label.innerHTML ='""" +path.replace('\\','/') +"""'; 
             paths.appendChild(label);
             br = document.createElement('br');
             paths.appendChild(br);
