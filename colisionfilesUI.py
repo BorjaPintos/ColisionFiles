@@ -141,7 +141,7 @@ def generateStrHTML(colisionItems):
             <div id="principal_galery">
     """
     for key, c in colisionItems:
-        html+="""<img id="imgBig"src='"""+ c.path[0] + """'>"""
+        html+="""<img id="imgBig"src='"""+ c.path[0].replace('\\','/') + """'>"""
 
         break
     html+="""
@@ -149,8 +149,8 @@ def generateStrHTML(colisionItems):
             <div id="galery_min">
           """
     for key, c in colisionItems:
-        html+="""<img class="img_min" src='""" + c.path[0] +"""'onclick="{
-                document.getElementById('imgBig').src='""" + c.path[0] + """'
+        html+="""<img class="img_min" src='""" + c.path[0].replace('\\','/') +"""'onclick="{
+                document.getElementById('imgBig').src='""" + c.path[0].replace('\\','/') + """'
                 document.getElementById('hash').innerHTML = '"""+ c.md5 +"""'
                 document.getElementById('colisions').innerHTML = '"""+ str(c.count) +"""'
                 paths = document.getElementById('paths');

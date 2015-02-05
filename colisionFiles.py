@@ -29,7 +29,7 @@ class Colision():
     def __str__(self):
      value = "Hash :" + self.md5 + "\n" + "Colisions: " + str(self.count) + "\n" + "Paths:\n"
      for path in self.path:
-        value+=path + "\n"
+        value+=path.replace('\\','/') + "\n"
      return value
 
 class AVLTree():
