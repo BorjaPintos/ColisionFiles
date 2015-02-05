@@ -2,7 +2,7 @@ from Tkinter import *
 from PIL import Image  
 import tkFileDialog, os
 from colisionFiles import *
-  
+
 rootPath = ()
 tree = AVLTree()
 
@@ -41,7 +41,7 @@ def search():
 
     selectPath.pack_forget() 
     searching.pack()
-
+    root.update()
     tree.insertPath(rootPath)
 
     labelResult2.config(text=str(len(tree.getColisionList())))
@@ -57,6 +57,7 @@ def finish():
 def generateTxt():
     viewResults.pack_forget()
     generating.pack()
+    root.update()
     txt = generateStrTxt(tree.getColisionList().items());
     f = open('colisions.txt', 'w')
     f.write(txt)
@@ -65,9 +66,8 @@ def generateTxt():
 
 def generateHtml():
     viewResults.pack_forget()
-
     generating.pack()
-
+    root.update()
     html = generateStrHTML(tree.getColisionList().items());
     f = open('colisions.html', 'w')
     f.write(html)
@@ -104,7 +104,7 @@ def generateStrHTML(colisionItems):
             border: 1px solid #F2F2F2;
             border-radius: 25px;
             width: 940px;
-            height: 300px;
+            height: 600px;
             }
 
             #galery_min{
@@ -182,7 +182,7 @@ def generateStrHTML(colisionItems):
                 <div id="paths">
                 """
         for path in c.path:
-            html+="""<label>"""+ path + """</label><br>"""
+            html+="""<label>"""+ path.replace('\\','/') + """</label><br>"""
         html+="""</div>"""
                 
         break
